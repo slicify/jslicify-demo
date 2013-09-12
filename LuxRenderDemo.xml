@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project slicify-demo">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="LuxRenderDemo.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="com.slicify.demo.lux.LuxRenderDemo"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="bin"/>
+            <fileset dir="../jslicify/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/bcpkix-jdk15on-148.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/bcprov-jdk15on-148.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/commons-codec-1.6.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/commons-logging-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/fluent-hc-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/httpclient-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/httpclient-cache-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/httpcore-4.2.4.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/httpmime-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/sshj-0.8.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/slf4j-api-1.7.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="../jslicify/lib/slf4j-simple-1.7.5.jar"/>
+        </jar>
+    </target>
+</project>
