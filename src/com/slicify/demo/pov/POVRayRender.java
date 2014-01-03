@@ -43,9 +43,9 @@ public class POVRayRender {
 			times.put(System.currentTimeMillis(), "Start");
 			
 			// Book a machine - you can change the values here to specify the particular criteria you want			
-			bookingID = node.bookNode(1, 1, 1, 64);
+			bookingID = node.bookNode(2, 1024, 0.01, 64, 10);
 			
-			if(bookingID == -1)
+			if(bookingID < 0)
 				System.out.println("Error thrown from booking call");
 			else if(bookingID == 0)
 				System.out.println("No machines available");

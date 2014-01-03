@@ -12,6 +12,9 @@ import com.slicify.SlicifyNode;
 
 public class SliceManager {
 
+	//maximum number of nodes to book
+	private static final int MAX_MACHINES = 4;
+	
 	private int xSlices;
 	private int ySlices;
 	private int xSliceSize;
@@ -88,12 +91,12 @@ public class SliceManager {
 		Node.setUsername(LuxRenderDemo.slicifyUser);
 		Node.setPassword(LuxRenderDemo.slicifyPassword);
 		
-		//try to book as many machines as possible
+		//try to book up to MAX_MACHINES
 		boolean moreMachines = true;
-		while(moreMachines && renderNodes.size() < (xSlices * ySlices))
+		while(moreMachines && renderNodes.size() < (xSlices * ySlices) && renderNodes.size() < MAX_MACHINES)
 		{
 			// Book a machine - you can change the values here to specify the particular criteria you want
-			int bookingID = Node.bookNode(1, 1, 1, 64);
+			int bookingID = Node.bookNode(2, 1024, 0.01, 64, 10);
 			if(bookingID <= 0) {
 				moreMachines = false;
 			}
@@ -102,7 +105,7 @@ public class SliceManager {
 				//create a basic stats container
 				StatsInfo info = new StatsInfo();
 				info.setBookingID(bookingID);
-				info.setMachine(Node.getMachineSpec(bookingID));
+				info.setMachine(Node.getMachineSpec(bookingID).trim());
 				info.setAvgRenderTime(0);
 				info.setRenderCount(0);
 				LuxRenderDemo.Instance.StatsContainer.addNodeStats(bookingID, info);
