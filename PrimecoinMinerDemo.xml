@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project jslicify-demo">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <target name="create_run_jar">
+        <jar destfile="C:/Users/steve/workspace-slicify/jslicify-demo/PrimecoinMinerDemo.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="com.slicify.demo.bitcoin.PrimeCoinMining"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="C:/Users/steve/workspace-slicify/jslicify-demo/bin"/>
+            <fileset dir="C:/Users/steve/workspace-slicify/jslicify/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/bcpkix-jdk15on-148.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/bcprov-jdk15on-148.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/commons-codec-1.6.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/commons-logging-1.1.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/fluent-hc-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/httpclient-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/httpclient-cache-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/httpcore-4.2.4.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/httpmime-4.2.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/sshj-0.8.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/slf4j-api-1.7.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/workspace-slicify/jslicify/lib/slf4j-simple-1.7.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/Documents/eclipse/plugins/org.junit_4.10.0.v4_10_0_v20120426-0900/junit.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="C:/Users/steve/Documents/eclipse/plugins/org.hamcrest.core_1.1.0.v20090501071000.jar"/>
+        </jar>
+    </target>
+</project>
