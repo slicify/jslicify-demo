@@ -38,6 +38,10 @@ public class PrimeCoinMining {
 			//get username/password
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(isr);
+			
+			System.out.println("http://www.slicify.com Example Primecoin Miner. Source at https://github.com/slicify\n");
+			
+			
 			System.out.println("Enter your slicify.com username:");			
 			Username = br.readLine();
 
