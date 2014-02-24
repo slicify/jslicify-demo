@@ -21,7 +21,7 @@ import com.slicify.SlicifyNode;
  */
 public class PrimeCoinMining {
 
-	public static String MiningAddress = "AcxUi4AyTckaGxUKfpk1Xi6dxXf7AYVWf2";
+	public static String MiningAddress = "";
 		
 	public static Map<Integer, NodeSession> OpenBookings = new ConcurrentHashMap<Integer, NodeSession>();
 	
@@ -39,8 +39,13 @@ public class PrimeCoinMining {
 			InputStreamReader isr = new InputStreamReader(System.in);
 			BufferedReader br = new BufferedReader(isr);
 			
-			System.out.println("http://www.slicify.com Example Primecoin Miner. Source at https://github.com/slicify\n");
-			
+			System.out.println("http://www.slicify.com Example Primecoin Miner. Source at https://github.com/slicify/jslicify-demo\n");
+
+			System.out.println("Enter your mining address [default AcxUi4AyTckaGxUKfpk1Xi6dxXf7AYVWf2]:");			
+			String address = br.readLine();
+			if(address.length() <= 0)
+				address = "AcxUi4AyTckaGxUKfpk1Xi6dxXf7AYVWf2";
+			MiningAddress = address;
 			
 			System.out.println("Enter your slicify.com username:");			
 			Username = br.readLine();
