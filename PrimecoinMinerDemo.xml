@@ -5,7 +5,7 @@
     <target name="create_run_jar">
         <jar destfile="PrimecoinMinerDemo.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="com.slicify.demo.bitcoin.PrimeCoinMining"/>
+                <attribute name="Main-Class" value="com.slicify.demo.bitcoin.PrimecoinGUI"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="./bin"/>

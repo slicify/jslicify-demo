@@ -1,6 +1,4 @@
 package com.slicify.demo.bitcoin;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -8,50 +6,38 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.slicify.SlicifyNode;
 
-/**
- * Example console app for primecoin mining. Books any available nodes and sets them up with the beeeeer.org
- * pool primecoin miner.
- * 
- * Remember to change your mining address
- * This also downloads an older precompiled pool miner from our website. You can grab and recompile
- * the updated ones if you prefer.
- * 
- * @author slicify
- *
- */
-public class PrimeCoinMining {
+public class PrimeCoinMining implements Runnable  {
 
-	public static String MiningAddress = "";
+	public String MiningAddress = "";
 		
-	public static Map<Integer, NodeSession> OpenBookings = new ConcurrentHashMap<Integer, NodeSession>();
+	public Map<Integer, NodeSession> OpenBookings = new ConcurrentHashMap<Integer, NodeSession>();
 	
-	private static String Username;
-	private static String Password;
+	private String Username;
+	private String Password;
 	
-	public static void main(String[] args) {
+	public PrimeCoinMining(String slicifyUser, String slicifyPassword, String miningaddress) throws Exception 
+	{
+		//validate
+		if(miningaddress.length() <= 0)
+			throw new Exception("Set the correct mining address");
 		
-		//web services wrapper
-		SlicifyNode node = new SlicifyNode();
+		MiningAddress = miningaddress;
+		Username = slicifyUser;
+		Password = slicifyPassword;
 
+		//start background thread
+		Thread restThread = new Thread(this);
+		restThread.start();
+	}
+
+	@Override
+	public void run()
+	{
+		
 		try {
 			
-			//get username/password
-			InputStreamReader isr = new InputStreamReader(System.in);
-			BufferedReader br = new BufferedReader(isr);
-			
-			System.out.println("http://www.slicify.com Example Primecoin Miner. Source at https://github.com/slicify/jslicify-demo\n");
-
-			System.out.println("Enter your mining address [default AcxUi4AyTckaGxUKfpk1Xi6dxXf7AYVWf2]:");			
-			String address = br.readLine();
-			if(address.length() <= 0)
-				address = "AcxUi4AyTckaGxUKfpk1Xi6dxXf7AYVWf2";
-			MiningAddress = address;
-			
-			System.out.println("Enter your slicify.com username:");			
-			Username = br.readLine();
-
-			System.out.println("Enter your slicify.com password:");
-			Password = br.readLine();
+			//web services wrapper
+			SlicifyNode node = new SlicifyNode();
 
 			//set your website login
 			node.setUsername(Username);
@@ -71,6 +57,8 @@ public class PrimeCoinMining {
 			{			
 				try
 				{
+					//show latest account balance
+					PrimecoinGUI.Instance.updateBalance(node.getAccountBalance());
 	
 					//get latest booking list from the server
 					List<Integer> bookings = node.getActiveBookingIDs();
@@ -109,26 +97,46 @@ public class PrimeCoinMining {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		System.out.println("Exception in main booking loop");
+		System.exit(0);
 	}
 		
-	private static void newBooking(int bookingID) throws Exception 
+	private void newBooking(int bookingID) throws Exception 
 	{
 		//run this session in the background
 		System.out.println("Starting new booking: " + bookingID);
-		NodeSession session = new NodeSession(Username, Password, bookingID);
+
+		//get REST API link
+		SlicifyNode node = new SlicifyNode();
+		node.setUsername(Username);
+		node.setPassword(Password);		
+		
+		//create a basic stats container
+		StatsInfo info = new StatsInfo();
+		info.setBookingID(bookingID);
+		info.setStatus("STARTED");
+		info.setMachine(node.getMachineSpec(bookingID).trim());
+		info.setBidID(node.getBookingBidID(bookingID));
+		info.setCountry(node.getBookingCountry(bookingID));
+		info.setEcu(node.getECU(bookingID));
+
+		PrimecoinGUI.Instance.StatsContainer.addNodeStats(bookingID, info);
+		NodeSession session = new NodeSession(this, Username, Password, bookingID, info);
 
 		//store session info
 		OpenBookings.put(bookingID, session);
 		session.start();
 	}
 
-	private static void closeBooking(int bookingID) 
+	private void closeBooking(int bookingID) 
 	{	
 		if(OpenBookings.containsKey(bookingID))
 		{
 			//close associated session
 			System.out.println("Closing booking: " + bookingID);
 			NodeSession session = OpenBookings.get(bookingID);
+			session.StatsInfo.setStatus("TERMINATED");
 			session.close();
 		}
 	}

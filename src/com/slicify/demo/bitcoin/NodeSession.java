@@ -16,14 +16,18 @@ public class NodeSession implements Runnable {
 	public String Password;
 	public int BookingID;
 	public int BidID;
+	public StatsInfo StatsInfo;
 
+	private PrimeCoinMining Manager;
 	private PrimeCoinNode session;
 	private Thread runThread;
 	
-	public NodeSession(String username, String password, int bookingID) {
+	public NodeSession(PrimeCoinMining manager, String username, String password, int bookingID, StatsInfo statsinfo) {
+		Manager = manager;
 		Username = username;
 		Password = password;
 		BookingID = bookingID; 
+		StatsInfo = statsinfo;
 	}
 
 	public void start() throws Exception {
@@ -67,11 +71,12 @@ public class NodeSession implements Runnable {
 				Log("Sudo PW:" + sudoPW);					
 	
 				//PrimeCoinNode to manage each node
-				session = new PrimeCoinNode(Username, BookingID, bookingOTP, sudoPW, cores);
+				session = new PrimeCoinNode(Username, BookingID, bookingOTP, sudoPW, cores, Manager.MiningAddress, StatsInfo);
 				session.start();	
 				
 			} catch (Error | Exception e) {
 				Log("Exception - shutting down " + e.getMessage());
+				StatsInfo.setStatus("SHUTTING DOWN:" + e.getMessage());
 				e.printStackTrace();
 				OK = false;
 				close();
@@ -91,7 +96,7 @@ public class NodeSession implements Runnable {
 		
 		//delete ourselves from connection list
 		Log("Removing openbooking entry");
-		PrimeCoinMining.OpenBookings.remove(BookingID);
+		Manager.OpenBookings.remove(BookingID);
 
 		//try to shut down background thread
 		try
